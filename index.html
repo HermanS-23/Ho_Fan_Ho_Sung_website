@@ -1,11 +1,548 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
-    <title>My First Website</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>好飯好餸 Ho Fan Ho Sung | 香港國際機場兩餸飯 · HKIA Two-Dish Rice</title>
+<style>
+  :root{
+    --red:#d32f2f;
+    --deep:#a41e1e;
+    --gold:#e8a33d;
+    --amber:#f6b93b;
+    --ink:#2a1c14;
+    --paper:#fff8ef;
+    --soft:#fdecd8;
+    --cream:#fff2e0;
+    --muted:#7d6b5c;
+    --green:#3c7a4e;
+    --shadow:0 12px 44px rgba(120,60,20,.16);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    font-family:"Segoe UI","Noto Sans HK","PingFang HK","Microsoft JhengHei",sans-serif;
+    color:var(--ink);background:var(--paper);line-height:1.65;overflow-x:hidden;
+  }
+  a{text-decoration:none;color:inherit}
+  .container{max-width:1180px;margin:0 auto;padding:0 24px}
+  .zh{font-weight:800}
+  .en{color:var(--muted);font-weight:600}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed;top:0;left:0;right:0;z-index:100;
+    background:rgba(255,248,239,.9);backdrop-filter:blur(12px);
+    border-bottom:1px solid rgba(120,60,20,.08);transition:.3s;
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:76px}
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo-img{
+    height:56px;width:auto;display:block;
+  }
+  .brand .bt{font-weight:900;font-size:19px;letter-spacing:1px;line-height:1.15}
+  .brand .bt small{display:block;font-size:10px;color:var(--muted);font-weight:700;letter-spacing:2px}
+  .navlinks{display:flex;gap:30px;align-items:center}
+  .navlinks a{font-weight:700;font-size:15px;color:#4a382c;transition:.2s;position:relative}
+  .navlinks a small{display:block;font-size:10px;color:var(--muted);font-weight:600;letter-spacing:.5px}
+  .navlinks a::after{content:"";position:absolute;left:0;bottom:-6px;height:2.5px;width:0;background:var(--red);transition:.25s;border-radius:2px}
+  .navlinks a:hover::after{width:100%}
+  .cta-btn{
+    background:var(--red);color:#fff;padding:12px 24px;border-radius:30px;font-weight:800;font-size:15px;
+    box-shadow:0 6px 18px rgba(211,47,47,.35);transition:.25s;border:none;cursor:pointer;line-height:1.2;
+  }
+  .cta-btn small{display:block;font-size:10px;opacity:.85;font-weight:600}
+  .cta-btn:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(211,47,47,.45)}
+  .burger{display:none;font-size:28px;background:none;border:none;cursor:pointer;color:var(--red)}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:150px 0 90px;position:relative;overflow:hidden;
+    background:
+      radial-gradient(circle at 88% 12%, rgba(246,185,59,.25), transparent 45%),
+      radial-gradient(circle at 8% 92%, rgba(211,47,47,.10), transparent 42%),
+      var(--paper);
+  }
+  .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:50px;align-items:center}
+  .badge{
+    display:inline-flex;align-items:center;gap:8px;background:var(--soft);color:var(--deep);
+    padding:8px 18px;border-radius:30px;font-weight:800;font-size:13px;margin-bottom:22px;
+    border:1px solid rgba(211,47,47,.15);
+  }
+  .hero h1{font-size:clamp(40px,6.5vw,68px);line-height:1.05;font-weight:900;letter-spacing:-1px}
+  .hero h1 .big{display:block;color:var(--red)}
+  .hero h1 .sub{display:block;font-size:clamp(20px,3vw,30px);color:var(--ink);margin-top:6px;letter-spacing:0}
+  .hero p.lead{font-size:18px;color:var(--muted);margin:22px 0 8px;max-width:520px}
+  .hero p.lead-zh{font-size:19px;color:#4a382c;font-weight:600;margin-bottom:30px;max-width:520px}
+  .hero-actions{display:flex;gap:16px;flex-wrap:wrap}
+  .ghost-btn{
+    padding:14px 28px;border-radius:30px;font-weight:800;border:2px solid var(--ink);
+    background:transparent;cursor:pointer;transition:.25s;font-size:15px;line-height:1.2;
+  }
+  .ghost-btn small{display:block;font-size:10px;font-weight:600;color:var(--muted)}
+  .ghost-btn:hover{background:var(--ink);color:#fff}
+  .ghost-btn:hover small{color:#e8d8c8}
+  .btn-lg{padding:15px 32px}
+  .hero-stats{display:flex;gap:36px;margin-top:46px;flex-wrap:wrap}
+  .hero-stats .num{font-size:30px;font-weight:900;color:var(--red)}
+  .hero-stats .lbl{font-size:13px;color:var(--muted);font-weight:700}
+  .hero-stats .lbl small{display:block;font-size:11px;font-weight:500}
+
+  /* Plate card */
+  .plate-wrap{position:relative;display:grid;place-items:center}
+  .plate{
+    width:min(430px,86vw);aspect-ratio:1;border-radius:50%;position:relative;
+    background:
+      radial-gradient(circle at 50% 50%, #fff 0 58%, #f3e7d4 58% 62%, #fff 62% 100%);
+    box-shadow:var(--shadow), inset 0 0 0 14px #fbeecf;
+    display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:0;overflow:hidden;
+  }
+  .plate .cell{display:grid;place-items:center;font-size:58px;position:relative}
+  .plate .cell span{filter:drop-shadow(0 6px 8px rgba(0,0,0,.15))}
+  .plate .cell.rice{background:radial-gradient(circle,#fffdf8,#f6efe2)}
+  .rice-label{position:absolute;bottom:16px;font-size:12px;font-weight:800;color:var(--muted)}
+  .badge-float{
+    position:absolute;background:#fff;border-radius:16px;padding:12px 16px;box-shadow:var(--shadow);
+    font-weight:800;font-size:14px;animation:float 4s ease-in-out infinite;
+  }
+  .badge-float .p{color:var(--red);font-size:18px}
+  .badge-float small{display:block;font-size:11px;color:var(--muted);font-weight:600}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+
+  /* ---------- MARQUEE ---------- */
+  .marquee{background:var(--red);color:#fff;padding:14px 0;overflow:hidden;white-space:nowrap}
+  .marquee .track{display:inline-block;animation:scroll 22s linear infinite;font-weight:800;font-size:16px}
+  .marquee .track span{margin:0 28px;opacity:.95}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ---------- SECTION SHARED ---------- */
+  section{padding:90px 0}
+  .sec-head{text-align:center;max-width:680px;margin:0 auto 56px}
+  .sec-head .kicker{color:var(--gold);font-weight:900;letter-spacing:3px;font-size:13px;text-transform:uppercase}
+  .sec-head h2{font-size:clamp(30px,4.4vw,46px);font-weight:900;margin:8px 0 6px;letter-spacing:-.5px}
+  .sec-head h2 .en{font-size:.55em;display:block;font-weight:700;margin-top:2px}
+  .sec-head p{color:var(--muted);font-size:17px;margin-top:10px}
+
+  /* ---------- MENU / FOOD ---------- */
+  .menu-cat{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:44px}
+  .chip{
+    background:#fff;border:2px solid var(--soft);padding:9px 20px;border-radius:30px;font-weight:800;
+    font-size:14px;cursor:default;transition:.2s;box-shadow:0 3px 10px rgba(120,60,20,.05)
+  }
+  .chip small{color:var(--muted);font-weight:600;margin-left:4px}
+  .chip.active,.chip:hover{background:var(--red);color:#fff;border-color:var(--red)}
+  .chip.active small,.chip:hover small{color:#ffdede}
+  .dishes{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+  .dish{
+    background:#fff;border-radius:20px;padding:26px 20px;text-align:center;
+    box-shadow:0 6px 22px rgba(120,60,20,.07);border:1px solid rgba(120,60,20,.05);transition:.3s;
+  }
+  .dish:hover{transform:translateY(-8px);box-shadow:var(--shadow)}
+  .dish .emo{font-size:52px;margin-bottom:12px;filter:drop-shadow(0 6px 8px rgba(0,0,0,.12))}
+  .dish .zh{font-size:18px;display:block}
+  .dish .en{font-size:13px;display:block;margin-top:2px}
+  .dish .tagx{display:inline-block;margin-top:10px;font-size:11px;font-weight:800;color:var(--green);background:#e7f3ea;padding:3px 10px;border-radius:20px}
+  .dish .tagx.hot{color:var(--deep);background:#fde3e3}
+
+  /* ---------- COMBO / HOW ---------- */
+  .combo{background:linear-gradient(135deg,#fff4e2,#ffe9cf)}
+  .combo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;counter-reset:s}
+  .combo-card{
+    background:#fff;border-radius:22px;padding:36px 28px;text-align:center;position:relative;
+    box-shadow:0 6px 22px rgba(120,60,20,.08);
+  }
+  .combo-card .step-num{
+    width:46px;height:46px;border-radius:50%;background:var(--red);color:#fff;font-weight:900;font-size:20px;
+    display:grid;place-items:center;margin:0 auto 16px;box-shadow:0 6px 14px rgba(211,47,47,.35)
+  }
+  .combo-card .emo{font-size:44px;margin-bottom:8px}
+  .combo-card h4{font-size:20px}
+  .combo-card h4 .en{display:block;font-size:13px;margin-top:2px}
+  .combo-card p{color:var(--muted);font-size:14px;margin-top:8px}
+  .price-strip{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;margin-top:44px}
+  .price-tag{
+    background:#fff;border-radius:18px;padding:22px 34px;text-align:center;box-shadow:var(--shadow);
+    border:2px dashed var(--gold)
+  }
+  .price-tag .n{font-size:34px;font-weight:900;color:var(--red)}
+  .price-tag .n small{font-size:16px}
+  .price-tag .d{font-weight:800;font-size:15px}
+  .price-tag .d small{display:block;font-size:12px;color:var(--muted);font-weight:600}
+
+  /* ---------- WHY ---------- */
+  .feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+  .feat{text-align:center;padding:26px 18px;background:#fff;border-radius:20px;box-shadow:0 6px 20px rgba(120,60,20,.06);border:1px solid rgba(120,60,20,.05);transition:.3s}
+  .feat:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+  .feat .fic{font-size:40px;margin-bottom:14px}
+  .feat h4{font-size:18px}
+  .feat h4 .en{display:block;font-size:12px;margin-top:2px}
+  .feat p{color:var(--muted);font-size:14px;margin-top:8px}
+
+  /* ---------- LOCATION ---------- */
+  .loc{background:var(--ink);color:#f3e7d4}
+  .loc .sec-head h2{color:#fff}
+  .loc .sec-head p{color:#c9b8a6}
+  .loc-grid{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
+  .loc-info .row{display:flex;gap:16px;margin-bottom:24px;align-items:flex-start}
+  .loc-info .ic{width:52px;height:52px;border-radius:14px;background:rgba(255,255,255,.08);display:grid;place-items:center;font-size:24px;flex-shrink:0}
+  .loc-info h4{font-size:17px;color:#fff}
+  .loc-info h4 .en{color:#c9b8a6;font-weight:600;font-size:12px}
+  .loc-info p{color:#d8c9b8;font-size:15px}
+  .map-card{
+    background:linear-gradient(160deg,#33241a,#241812);border-radius:24px;padding:32px;position:relative;overflow:hidden;
+    border:1px solid rgba(255,255,255,.08);min-height:320px;display:flex;flex-direction:column;justify-content:space-between
+  }
+  .map-card .plane{font-size:120px;text-align:center;opacity:.9;margin:10px 0}
+  .map-card .term{display:flex;justify-content:space-around;text-align:center;gap:10px}
+  .map-card .term div{background:rgba(255,255,255,.06);border-radius:14px;padding:14px 10px;flex:1}
+  .map-card .term .z{font-weight:800;color:#fff;font-size:15px}
+  .map-card .term .e{font-size:11px;color:#c9b8a6}
+  .airport-tag{position:absolute;top:20px;right:20px;background:var(--red);color:#fff;font-weight:800;font-size:12px;padding:6px 14px;border-radius:20px}
+
+  /* ---------- REVIEWS ---------- */
+  .quotes{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .quote{background:#fff;padding:30px;border-radius:20px;box-shadow:0 6px 20px rgba(120,60,20,.07);border:1px solid rgba(120,60,20,.05)}
+  .stars{color:var(--amber);margin-bottom:12px;font-size:18px}
+  .quote p{font-size:15px;color:#4a382c;margin-bottom:8px}
+  .quote .p-en{font-size:13px;color:var(--muted);font-style:italic;margin-bottom:18px}
+  .who{display:flex;align-items:center;gap:12px}
+  .who .av{width:46px;height:46px;border-radius:50%;background:var(--soft);display:grid;place-items:center;font-weight:900;color:var(--red)}
+  .who .nm{font-weight:800;font-size:14px}
+  .who .rl{font-size:12px;color:var(--muted)}
+
+  /* ---------- CTA BANNER ---------- */
+  .banner{
+    background:linear-gradient(135deg,var(--red),var(--deep));color:#fff;border-radius:28px;
+    padding:64px;text-align:center;box-shadow:var(--shadow);position:relative;overflow:hidden;
+  }
+  .banner h2{font-size:clamp(28px,4vw,42px);font-weight:900;margin-bottom:6px}
+  .banner h2 .en{display:block;font-size:.5em;font-weight:700;opacity:.9;margin-top:6px}
+  .banner p{opacity:.92;font-size:17px;margin:14px 0 28px}
+  .banner .cta-btn{background:#fff;color:var(--red)}
+  .banner .emoji{position:absolute;font-size:130px;opacity:.12}
+
+  /* ---------- FOOTER ---------- */
+  footer{background:#1c120b;color:#c9b8a6;padding:60px 0 28px}
+  .foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:36px;margin-bottom:40px}
+  .foot-grid h5{color:#fff;font-size:15px;margin-bottom:16px;letter-spacing:1px}
+  .foot-grid h5 small{display:block;color:#8a7866;font-weight:500;font-size:11px}
+  .foot-grid a,.foot-grid p{display:block;color:#a99584;font-size:14px;margin-bottom:10px;transition:.2s}
+  .foot-grid a:hover{color:#fff}
+  .foot-brand p{color:#a99584;font-size:14px;margin-top:14px;max-width:280px}
+  .foot-bottom{border-top:1px solid rgba(255,255,255,.1);padding-top:24px;text-align:center;font-size:13px;color:#7a6857}
+
+  /* ---------- REVEAL ---------- */
+  .reveal{opacity:0;transform:translateY(30px);transition:.7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.show{opacity:1;transform:none}
+
+  /* ---------- RESPONSIVE ---------- */
+  @media(max-width:980px){
+    .hero-grid,.loc-grid{grid-template-columns:1fr}
+    .dishes,.feat-grid{grid-template-columns:1fr 1fr}
+    .combo-grid,.quotes{grid-template-columns:1fr}
+    .foot-grid{grid-template-columns:1fr 1fr}
+    .navlinks{
+      position:fixed;top:76px;left:0;right:0;background:var(--paper);flex-direction:column;
+      padding:24px;gap:18px;box-shadow:var(--shadow);display:none;
+    }
+    .navlinks.open{display:flex}
+    .burger{display:block}
+    .plate-wrap{margin-top:20px}
+  }
+  @media(max-width:560px){
+    .dishes,.feat-grid,.foot-grid{grid-template-columns:1fr}
+    .banner{padding:44px 24px}
+    section{padding:64px 0}
+    .hero-stats{gap:24px}
+  }
+</style>
 </head>
 <body>
-    <h1>Hello World!</h1>
-    <p>This is my first website hosted on GitHub.</p>
+
+<!-- NAV -->
+<header>
+  <div class="container nav">
+    <a class="brand" href="#home">
+      <!-- ===== YOUR LOGO IN THE TOP-LEFT CORNER ===== -->
+      <img class="logo-img" src="Ho-Fan-Ho-Sung-Logo.png" alt="好飯好餸 Ho Fan Ho Sung logo">
+      <span class="brand-text">
+        <b>好飯好餸</b>
+        <small>HO FAN HO SUNG</small>
+      </span>
+    </a>
+    <nav class="navlinks" id="menu">
+      <a href="#menu-sec">餸菜<small>Dishes</small></a>
+      <a href="#combo">點揀餐<small>Combo</small></a>
+      <a href="#why">特色<small>Why Us</small></a>
+      <a href="#location">地址<small>Location</small></a>
+      <a href="#reviews">評價<small>Reviews</small></a>
+    </nav>
+    <button class="burger" onclick="document.getElementById('menu').classList.toggle('open')">☰</button>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="container hero-grid">
+    <div class="reveal show">
+      <span class="badge">✈️ 香港國際機場 · Hong Kong International Airport</span>
+      <h1>
+        <span class="big">好飯好餸</span>
+        <span class="sub">香港機場・地道兩餸飯</span>
+      </h1>
+      <p class="lead-zh">熱辣辣、鑊氣十足！起飛前嘅一餐，都要食得又飽又滿足。任揀心水餸菜，配上香噴噴白飯。</p>
+      <p class="lead">Authentic Hong Kong <b> This This Rice </b> at the airport — pick your favourite dishes over a bowl of steaming rice. Hearty, fast and affordable, right before you fly.</p>
+      <div class="hero-actions" style="margin-top:26px">
+        <button class="cta-btn btn-lg" onclick="location.href='#menu-sec'">睇餸菜 <small>View the dishes →</small></button>
+        <button class="ghost-btn btn-lg" onclick="location.href='#location'">搵店 <small>Find our shop</small></button>
+      </div>
+      <div class="hero-stats">
+        <div><div class="num">30+</div><div class="lbl">款餸菜<small>Daily dishes</small></div></div>
+        <div><div class="num">$50</div><div class="lbl">起<small>From / per set</small></div></div>
+        <div><div class="num">🕒</div><div class="lbl">07:00 - 23:00<small>07:00 a.m. – 11:00 p.m.</small></div></div>
+      </div>
+    </div>
+    <div class="reveal show">
+      <div class="plate-wrap">
+        <div class="plate">
+          <div class="cell rice"><span>🍚</span><span class="rice-label">白飯 Rice</span></div>
+          <div class="cell"><span>🍗</span></div>
+          <div class="cell"><span>🥬</span></div>
+          <div class="cell"><span>🐟</span></div>
+        </div>
+        <div class="badge-float" style="top:2%;left:-4%"><span class="p">兩餸飯</span><small>This This rice</small></div>
+        <div class="badge-float" style="bottom:6%;right:-6%;animation-delay:1.2s"><span class="p">🔥 鑊氣</span><small>Wok hei</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee">
+  <div class="track">
+    <span>🍗 招牌炸雞髀</span><span>🥩 豉椒排骨</span><span>🥬 蒜蓉炒時菜</span><span>🍤 椒鹽鮮魷</span><span>🍳 滑蛋蝦仁</span><span>🥘 咖喱雞</span><span>🍖 叉燒</span><span>🐟 煎魚</span>
+    <span>🍗 招牌炸雞髀</span><span>🥩 豉椒排骨</span><span>🥬 蒜蓉炒時菜</span><span>🍤 椒鹽鮮魷</span><span>🍳 滑蛋蝦仁</span><span>🥘 咖喱雞</span><span>🍖 叉燒</span><span>🐟 煎魚</span>
+  </div>
+</div>
+
+<!-- MENU -->
+<section id="menu-sec">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="kicker">Our Dishes</div>
+      <h2>今日餸菜 <span class="en">Today's Selection</span></h2>
+      <p>每日新鮮炮製，超過三十款餸菜任你配搭。<br>Over 30 freshly cooked dishes daily — mix and match your perfect plate.</p>
+    </div>
+
+    <div class="menu-cat reveal">
+      <div class="chip active">全部 <small>All</small></div>
+      <div class="chip">肉類 <small>Meat</small></div>
+      <div class="chip">海鮮 <small>Seafood</small></div>
+      <div class="chip">蔬菜 <small>Veggie</small></div>
+      <div class="chip">蛋類 <small>Egg</small></div>
+    </div>
+
+    <div class="dishes">
+      <div class="dish reveal"><div class="emo">🍗</div><span class="zh">招牌炸雞髀</span><span class="en">Signature Fried Chicken</span><span class="tagx hot">🔥 人氣 Popular</span></div>
+      <div class="dish reveal"><div class="emo">🥩</div><span class="zh">豉椒炒排骨</span><span class="en">Pork Ribs · Black Bean</span><span class="tagx hot">🔥 熱賣 Hot</span></div>
+      <div class="dish reveal"><div class="emo">🍖</div><span class="zh">蜜汁叉燒</span><span class="en">Honey BBQ Pork</span><span class="tagx">招牌 Classic</span></div>
+      <div class="dish reveal"><div class="emo">🥘</div><span class="zh">咖喱雞</span><span class="en">Curry Chicken</span><span class="tagx">香濃 Rich</span></div>
+      <div class="dish reveal"><div class="emo">🍤</div><span class="zh">椒鹽鮮魷</span><span class="en">Salt & Pepper Squid</span><span class="tagx">海鮮 Seafood</span></div>
+      <div class="dish reveal"><div class="emo">🍳</div><span class="zh">滑蛋蝦仁</span><span class="en">Shrimp with Egg</span><span class="tagx">滑嫩 Silky</span></div>
+      <div class="dish reveal"><div class="emo">🐟</div><span class="zh">香煎鮫魚</span><span class="en">Pan-fried Fish</span><span class="tagx">海鮮 Seafood</span></div>
+      <div class="dish reveal"><div class="emo">🥬</div><span class="zh">蒜蓉炒時菜</span><span class="en">Garlic Greens</span><span class="tagx">健康 Healthy</span></div>
+      <div class="dish reveal"><div class="emo">🍆</div><span class="zh">魚香茄子</span><span class="en">Braised Eggplant</span><span class="tagx">下飯 Tasty</span></div>
+      <div class="dish reveal"><div class="emo">🍅</div><span class="zh">蕃茄炒蛋</span><span class="en">Tomato & Egg</span><span class="tagx">家常 Homely</span></div>
+      <div class="dish reveal"><div class="emo">🥟</div><span class="zh">粉絲蒸肉餅</span><span class="en">Steamed Pork Patty</span><span class="tagx">蒸煮 Steamed</span></div>
+      <div class="dish reveal"><div class="emo">🌶️</div><span class="zh">麻婆豆腐</span><span class="en">Mapo Tofu</span><span class="tagx hot">🌶️ 微辣 Spicy</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMBO -->
+<section class="combo" id="combo">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="kicker">How It Works</div>
+      <h2>三步・自由配搭 <span class="en">Build Your Plate in 3 Steps</span></h2>
+      <p>豐儉由人，快靚正。<br>Fast, filling and made just the way you like it.</p>
+    </div>
+    <div class="combo-grid">
+      <div class="combo-card reveal">
+        <div class="step-num">1</div>
+        <div class="emo">🥢</div>
+        <h4>揀兩餸 / 三餸 <span class="en">Pick two / three dishes</span></h4>
+        <p>三十多款餸菜自由組合。<br>Mix any two / three from 30+ daily dishes.</p>
+      </div>
+      <div class="combo-card reveal">
+        <div class="step-num">2</div>
+        <div class="emo">🍱</div>
+        <h4>添加 <span class="en">Add-ons &amp; drinks</span></h4>
+        <p>加餸加飲品，任你配。<br>Extra dish or a drink.</p>
+      </div>
+      <div class="combo-card reveal">
+        <div class="step-num">3</div>
+        <div class="emo">💳</div>
+        <h4>支付 <span class="en">Pay Your Way</span></h4>
+        <p>接受現金 • Visa / Master • 微信支付 • 支付寶 • 八達通<br>Accept Cash • Visa / Master • WeChat Pay • Alipay • Octopus</p>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+    <div class="price-strip reveal">
+      <div class="price-tag"><div class="n">$<small>50</small></div><div class="d">兩餸飯<small>Two-dish rice</small></div></div>
+      <div class="price-tag"><div class="n">$<small>55</small></div><div class="d">三餸飯<small>Three-dish rice</small></div></div>
+      <div class="price-tag"><div class="n">$<small>5</small></div><div class="d">加餸<small>Extra dish</small></div></div>
+      <div class="price-tag"><div class="n">$<small>8</small></div><div class="d">加飲品<small>Extra drink</small></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="kicker">Why Ho Fan Ho Sung</div>
+      <h2>點解揀好飯好餸 <span class="en">Why Choose Us</span></h2>
+      <p>機場搵到嘅地道港味。<br>A real taste of Hong Kong, right at the airport.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat reveal"><div class="fic">🔥</div><h4>鑊氣十足 <span class="en">Wok-Fresh</span></h4><p>即叫即上，熱辣辣夠鑊氣。<br>Cooked fresh, served piping hot.</p></div>
+      <div class="feat reveal"><div class="fic">💰</div><h4>抵食大件 <span class="en">Great Value</span></h4><p>機場價都食得起，份量十足。<br>Generous portions at fair prices.</p></div>
+      <div class="feat reveal"><div class="fic">⚡</div><h4>快靚正 <span class="en">Fast Service</span></h4><p>趕住上機都食得從容。<br>Quick enough before any flight.</p></div>
+      <div class="feat reveal"><div class="fic">🍚</div><h4>選擇多 <span class="en">Wide Variety</span></h4><p>三十多款餸菜日日新鮮。<br>30+ dishes, freshly made daily.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section class="loc" id="location">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="kicker">Find Us</div>
+      <h2>地址及營業時間 <span class="en">Location &amp; Hours</span></h2>
+      <p>就喺香港國際機場，出發前記得幫襯！<br>Inside Hong Kong International Airport — grab a plate before you board.</p>
+    </div>
+    <div class="loc-grid">
+      <div class="loc-info reveal">
+        <div class="row"><div class="ic">📍</div><div><h4>地址 <span class="en">Address</span></h4><p>赤鱲角香港國際機場二號客運大樓抵港層(L3)旅遊車候車大堂3TL017及3TL158號舖<br>Shop 3TL017 & 3TL158, Coach Hall, Arrivals Level (L3), Hong Kong International Airport T2, Chek Lap Kok</p></div></div>
+        <div class="row"><div class="ic">🕒</div><div><h4>營業時間 <span class="en">Opening Hours</span></h4><p>每日 07:00 – 23:00（全年無休）<br>Daily 7:00 a.m. – 11:00 p.m. (Open all year)</p></div></div>
+        <div class="row"><div class="ic">📞</div><div><h4>查詢 <span class="en">Enquiry</span></h4><p>+852 2888 6688</p></div></div>
+        <div class="row"><div class="ic">🚇</div><div><h4>交通 <span class="en">Getting Here</span></h4><p>機場快綫「機場站」直達；巴士 A/E/S 綫可達。<br>Airport Express "Airport Station"; buses A / E / S routes.</p></div></div>
+      </div>
+      <div class="map-card reveal">
+        <span class="airport-tag">HKIA · 機場</span>
+        <div style="text-align:center;font-weight:800;color:#fff;font-size:15px">✈️ 二號客運大樓 Terminal 2</div>
+        <div class="plane">🛫</div>
+        <div class="term">
+          <div><div class="z">3 樓</div><div class="e">Level 3</div></div>
+          <div><div class="z">旅遊車候車大堂</div><div class="e">Coach Hall 📍 好飯好餸</div></div>
+          <div><div class="z">抵港大堂</div><div class="e">Arrivals</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="container">
+    <div class="sec-head reveal">
+      <div class="kicker">Reviews</div>
+      <h2>食客好評 <span class="en">What Diners Say</span></h2>
+      <p>旅客同機場員工都話好食！<br>Loved by travellers and airport staff alike.</p>
+    </div>
+    <div class="quotes">
+      <div class="quote reveal">
+        <div class="stars">★★★★★</div>
+        <p>「上機前食返碗兩餸飯，鑊氣十足又抵食，炸雞髀超正！」</p>
+        <p class="p-en">"A hearty two-dish rice before my flight — the fried chicken is amazing and such good value!"</p>
+        <div class="who"><div class="av">陳</div><div><div class="nm">陳小姐 Ms. Chan</div><div class="rl">旅客 · Traveller</div></div></div>
+      </div>
+      <div class="quote reveal">
+        <div class="stars">★★★★★</div>
+        <p>「喺機場返工，日日都幫襯，餸菜多選擇又新鮮。」</p>
+        <p class="p-en">"I work at the airport and eat here often — so many fresh choices every day."</p>
+        <div class="who"><div class="av">L</div><div><div class="nm">Louis</div><div class="rl">機場員工 · Airport Staff</div></div></div>
+      </div>
+      <div class="quote reveal">
+        <div class="stars">★★★★★</div>
+        <p>「離港前最後一餐地道港味，滿足！服務又快。」</p>
+        <p class="p-en">"My last taste of Hong Kong before flying out — authentic, fast and satisfying!"</p>
+        <div class="who"><div class="av">王</div><div><div class="nm">王先生 Mr. Wong</div><div class="rl">旅客 · Traveller</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section>
+  <div class="container">
+    <div class="banner reveal">
+      <span class="emoji" style="top:-10px;left:24px">🍚</span>
+      <span class="emoji" style="bottom:-24px;right:30px">🥢</span>
+      <h2>起飛前，食餐好嘅！<span class="en">Fuel up before you fly!</span></h2>
+      <p>赤鱲角香港國際機場二號客運大樓抵港層(L3)旅遊車候車大堂3TL017及3TL158號舖 · Food Court, Terminal 1, HKIA</p>
+      <button class="cta-btn" onclick="location.href='#location'">帶我去好飯好餸 · Take Me There</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <div class="brand" style="color:#fff"><span class="bt" style="color:#fff">好飯好餸<small style="color:#8a7866">HO FAN HO SUNG</small></span></div>
+        <p>香港國際機場地道兩餸飯，每日新鮮炮製。<br>Authentic Hong Kong two-dish rice at HKIA — freshly made every day.</p>
+      </div>
+      <div>
+        <h5>快速連結 <small>Quick Links</small></h5>
+        <a href="#menu-sec">今日餸菜 · Dishes</a>
+        <a href="#combo">配餐方法 · Combos</a>
+        <a href="#why">餐廳特色 · Why Us</a>
+        <a href="#reviews">食客評價 · Reviews</a>
+      </div>
+      <div>
+        <h5>營業時間 <small>Hours</small></h5>
+        <p>星期一至日<br>Mon – Sun</p>
+        <p>07:00 – 23:00</p>
+        <p>全年無休 · Open daily</p>
+      </div>
+      <div>
+        <h5>聯絡我哋 <small>Contact</small></h5>
+        <p>📍 赤鱲角香港國際機場二號客運大樓抵港層(L3)旅遊車候車大堂3TL017及3TL158號舖 <br>Shop 3TL017 & 3TL158, Coach Hall, Arrivals Level (L3), Hong Kong International Airport T2, Chek Lap Kok</p>
+        <p>📞 +852 2328 2296 </p>
+        <p>✉️ hello@hofanhosung.hk</p>
+      </div>
+    </div>
+    <div class="foot-bottom">© 2026 好飯好餸 Ho Fan Ho Sung · 香港國際機場 Hong Kong International Airport · 版權所有 All rights reserved. · 示範網站 Demo site.</div>
+  </div>
+</footer>
+
+<script>
+  // Scroll reveal
+  const io = new IntersectionObserver(entries=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+  // Menu category chips (visual toggle)
+  document.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+    document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+  }));
+
+  // Close mobile menu on link click
+  document.querySelectorAll('#menu a').forEach(a=>a.addEventListener('click',()=>{
+    document.getElementById('menu').classList.remove('open');
+  }));
+
+  // Header shadow on scroll
+  window.addEventListener('scroll',()=>{
+    document.querySelector('header').style.boxShadow = window.scrollY>10 ? '0 4px 20px rgba(120,60,20,.12)' : 'none';
+  });
+</script>
 </body>
 </html>
-``
